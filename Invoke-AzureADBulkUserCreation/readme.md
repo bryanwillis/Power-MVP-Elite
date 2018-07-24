@@ -7,6 +7,13 @@ Run the script as follows:
 
 .\Invoke-AzureADBulkUserCreation -FilePath <FilePath> -Credential <Username@customdomain.com> -Verbose
 
+
+
+Set-ExecutionPolicy RemoteSigned
+cd C:\
+.\Invoke-AzureADBulkUserCreation.ps1 -FilePath C:\users.csv -Credential user@site.com -Verbose
+
+
 This example will import all users from a CSV File and then create the corresponding account in Azure Active Directory. If Azure AD PowerShell module is not present on your system, then the module will be installed automatically, and the users will be created in Azure AD. If the user password is not defined in the CSV file, you will be asked to type a random password in secure format. This tool will also force the user to change the password at next login.
 
 Here are a couple of screenshots showing how to use this tool.
