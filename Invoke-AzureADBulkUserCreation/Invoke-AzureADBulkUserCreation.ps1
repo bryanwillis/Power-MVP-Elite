@@ -40,9 +40,9 @@ Param(
     [Alias('Cred')]
     [PSCredential]$Credential
 )
-Function Install-AzureAD {
+Function Install-AzureADPreview {
     Set-PSRepository -Name PSGallery -Installation Trusted -Verbose:$false
-    Install-Module -Name AzureAD -AllowClobber -Verbose:$false
+    Install-Module -Name AzureADPreview -AllowClobber -Verbose:$false
 }
 
 Try {
@@ -56,12 +56,12 @@ Catch {
     }
 
 Try {
-    Import-Module -Name AzureAD -ErrorAction Stop -Verbose:$false | Out-Null
+    Import-Module -Name AzureADPreview -ErrorAction Stop -Verbose:$false | Out-Null
     }
 Catch {
     Write-Verbose "Azure AD PowerShell Module not found..."
     Write-Verbose "Installing Azure AD PowerShell Module..."
-    Install-AzureAD
+    Install-AzureADPreview
     }
 
 Try {
@@ -114,7 +114,7 @@ Else {
     
 Try {    
     New-AzureADUser -DisplayName $DisplayName `
-                    -AccountEnabled $true `
+                    -AccountEnabled $false `
                     -MailNickName $MailNickName `
                     -UserPrincipalName $UserPrincipalName `
                     -PasswordProfile $PasswordProfile `
@@ -128,5 +128,9 @@ Try {
     } 
 Catch {
     Write-Error "$DisplayName : Error occurred while creating Azure AD Account. $_"
+    }
+    
+Try {
+    Set-AzureADUserManager -ObjectId $UserPrincipalName -RefObjectId $Entry.RefObjectId
     }
 }
