@@ -55,24 +55,6 @@ Catch {
     Break
     }
 
-Try {
-    Import-Module -Name AzureADPreview -ErrorAction Stop -Verbose:$false | Out-Null
-    }
-Catch {
-    Write-Verbose "Azure AD PowerShell Module not found..."
-    Write-Verbose "Installing Azure AD PowerShell Module..."
-    Install-AzureADPreview
-    }
-
-Try {
-    Write-Verbose "Connecting to Azure AD..."
-    Connect-AzureAD -Credential $Credential -ErrorAction Stop | Out-Null
-}
-Catch {
-    Write-Verbose "Cannot connect to Azure AD. Please check your credentials. Exiting!"
-    Break
-}
-
 Foreach($Entry in $CSVData) {
     # Verify that mandatory properties are defined for each object
     $DisplayName = $Entry.DisplayName
@@ -129,8 +111,5 @@ Try {
 Catch {
     Write-Error "$DisplayName : Error occurred while creating Azure AD Account. $_"
     }
-    
-Try {
-    Set-AzureADUserManager -ObjectId $UserPrincipalName -RefObjectId $Entry.RefObjectId
-    }
+
 }
